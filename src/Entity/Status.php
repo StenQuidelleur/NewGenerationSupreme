@@ -29,9 +29,15 @@ class Status
      */
     private $orders;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="status")
+     */
+    private $products;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +82,37 @@ class Status
             // set the owning side to null (unless already changed)
             if ($order->getStatus() === $this) {
                 $order->setStatus(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getStatus() === $this) {
+                $product->setStatus(null);
             }
         }
 

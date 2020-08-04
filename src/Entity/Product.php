@@ -55,6 +55,11 @@ class Product
      */
     private $orderProducts;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="products")
+     */
+    private $status;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -184,6 +189,18 @@ class Product
                 $orderProduct->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
