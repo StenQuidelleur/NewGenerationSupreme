@@ -32,17 +32,18 @@ class AppFixtures extends Fixture
         foreach ($categories as $item) {
             $category = new Category();
             $category->setName($item);
-            $categoriesArray[] = $category;
+            $category->setImage($faker->imageUrl(300,300));
             $manager->persist($category);
+            $categoriesArray[] = $category;
         }
 
         $subCategoriesArray = [];
-        for ($i=0; $i>30; $i++) {
+        for ($i=0; $i<30; $i++) {
             $subCategory = new SubCategory();
             $subCategory->setName($faker->name);
-            $subCategory->setCategory($faker->randomElements($categoriesArray));
-            $subCategoriesArray[] = $subCategory;
+            $subCategory->setCategory($faker->randomElement($categoriesArray));
             $manager->persist($subCategory);
+            $subCategoriesArray[] = $subCategory;
         }
 
         $shippingMethod = new ShippingMethod();
@@ -51,27 +52,27 @@ class AppFixtures extends Fixture
         $manager->persist($shippingMethod);
 
         $productsArray = [];
-        for ($i=0; $i>50; $i++) {
+        for ($i=0; $i<50; $i++) {
             $product = new Product();
             $product->setName($faker->name);
-            $product->setCategory($faker->randomElements($categoriesArray));
+            $product->setSubCategory($faker->randomElement($subCategoriesArray));
             $product->setPrice($faker->numberBetween(3,100));
             $product->setDescription($faker->text);
-            $productsArray[] = $product;
             $manager->persist($product);
+            $productsArray[] = $product;
         }
 
-        for ($i=0; $i>50; $i++) {
+        for ($i=0; $i<50; $i++) {
             $stock = new Stock();
-            $stock->setProduct($faker->randomElements($productsArray));
+            $stock->setProduct($faker->randomElement($productsArray));
             $stock->setMinimum(10);
             $stock->setQuantity(30);
             $manager->persist($stock);
         }
 
-        for ($i=0; $i>100; $i++) {
+        for ($i=0; $i<100; $i++) {
             $image = new Image();
-            $image->setProduct($faker->randomElements($productsArray));
+            $image->setProduct($faker->randomElement($productsArray));
             $image->setName($faker->imageUrl(300,300));
             $manager->persist($image);
         }
