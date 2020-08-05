@@ -35,11 +35,6 @@ class Product
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
-     */
-    private $category;
-
-    /**
      * @ORM\OneToOne(targetEntity=Stock::class, inversedBy="product", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -59,6 +54,11 @@ class Product
      * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="products")
      */
     private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products")
+     */
+    private $subCategory;
 
     public function __construct()
     {
@@ -103,18 +103,6 @@ class Product
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }
@@ -201,6 +189,18 @@ class Product
     public function setStatus(?Status $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getSubCategory(): ?SubCategory
+    {
+        return $this->subCategory;
+    }
+
+    public function setSubCategory(?SubCategory $subCategory): self
+    {
+        $this->subCategory = $subCategory;
 
         return $this;
     }

@@ -1,0 +1,90 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.logo {
+    font-family: 'Noto Serif', serif;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    display: block;
+    width: 200px;
+    padding: 5px 50px 5px 20px;
+    color: #3f4549;
+
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(63, 69, 73, 0.1);
+    text-decoration: none;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.nav-user {
+    flex-direction: inherit;
+}
+
+.search {
+    flex-flow: inherit;
+}
+
+.box {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.box h3 {
+    font-size: 40px;
+}
+
+.box:hover {
+    color: #1a1a1a;
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+    transition-duration: 1s;
+}
+
+.box img:hover {
+    opacity: 0.3;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.footer {
+    font-size: 12px;
+}
+
+.network a {
+    color: #FFF;
+}
+
+@media only screen and (min-width: 600px) {
+    .footer {
+        flex-direction: inherit !important;
+        justify-content: space-between !important;
+    }
+}
+
