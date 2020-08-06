@@ -42,6 +42,7 @@ class AppFixtures extends Fixture
             $subCategory = new SubCategory();
             $subCategory->setName($faker->name);
             $subCategory->setCategory($faker->randomElement($categoriesArray));
+            $subCategory->setImage($faker->imageUrl(300,300));
             $manager->persist($subCategory);
             $subCategoriesArray[] = $subCategory;
         }

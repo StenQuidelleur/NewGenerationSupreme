@@ -34,6 +34,11 @@ class SubCategory
      */
     private $products;
 
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $image;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -95,6 +100,18 @@ class SubCategory
                 $product->setSubCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
