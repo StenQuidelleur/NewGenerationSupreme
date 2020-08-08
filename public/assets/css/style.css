@@ -57,6 +57,10 @@ body {
     flex-flow: inherit;
 }
 
+.carousel-caption {
+    bottom: 40% !important;
+}
+
 .box .banner-category {
     position: relative;
     text-align: center;
@@ -65,12 +69,11 @@ body {
 
 .box h3 {
     font-size: 40px;
+    z-index: 1;
 }
 
 .box:hover {
     color: #1a1a1a;
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
     transition-duration: 1s;
 }
 
@@ -136,7 +139,7 @@ color: #FFF;
 
 @media only screen and (min-width: 600px) {
     .main {
-        min-height: calc(100vh - 86px - 86px);
+        min-height: calc(100vh - 86px - 30px);
         padding-top: 86px;
     }
     .logo {

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>NGS{% block title %}{% endblock %}</title>
         <script src="https://kit.fontawesome.com/12c728ad22.js" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
             <div class="d-flex">
                 <div class="navbar-nav mx-4 nav-user d-flex justify-content-center">
                     <a class="nav-link mr-3 text-dark d-lg-none mr-lg-1" href="#"><i class="fas fa-user"></i></a>
-                    <a class="nav-link ml-3 text-dark d-lg-none ml-lg-1" href="#"><i class="fas fa-shopping-cart"></i></a>
+                    <a class="nav-link ml-3 text-dark d-lg-none ml-lg-1" href="{{ path('cart_index') }}"><i class="fas fa-shopping-cart"></i></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -46,7 +46,7 @@
                     </form>
                     <div class="navbar-nav mx-4 nav-user d-flex justify-content-center">
                         <a class="nav-link mr-3 d-none text-dark d-lg-block mr-md-1" href="#"><i class="fas fa-user"></i></a>
-                        <a class="nav-link ml-3 d-none text-dark d-lg-block ml-md-1" href="#"><i class="fas fa-shopping-cart"></i></a>
+                        <a class="nav-link ml-3 d-none text-dark d-lg-block ml-md-1" href="{{ path('cart_index') }}"><i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
             </div>
