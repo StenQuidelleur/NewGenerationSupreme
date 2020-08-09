@@ -16,7 +16,11 @@
             <a class="navbar-brand logo" href="{{ path("home_index") }}">NGS</a>
             <div class="d-flex">
                 <div class="navbar-nav mx-4 nav-user d-flex justify-content-center">
-                    <a class="nav-link mr-3 text-dark d-lg-none mr-lg-1" href="#"><i class="fas fa-user"></i></a>
+                    {% if is_granted('ROLE_SUBSCRIBER') %}
+                    <a class="nav-link mr-3 text-dark d-lg-none mr-lg-1" href="{{ path('profile') }}"><i class="fas fa-user"></i></a>
+                    {% else %}
+                    <a class="nav-link mr-3 text-dark d-lg-none mr-lg-1" href="{{ path('app_login') }}"><i class="fas fa-user"></i></a>
+                    {% endif %}
                     <a class="nav-link ml-3 text-dark d-lg-none ml-lg-1" href="{{ path('cart_index') }}"><i class="fas fa-shopping-cart"></i></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +49,11 @@
                         <button class="btn my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
                     </form>
                     <div class="navbar-nav mx-4 nav-user d-flex justify-content-center">
-                        <a class="nav-link mr-3 d-none text-dark d-lg-block mr-md-1" href="#"><i class="fas fa-user"></i></a>
+                        {% if is_granted('ROLE_SUBSCRIBER') %}
+                        <a class="nav-link mr-3 d-none text-dark d-lg-block mr-md-1" href="{{ path('profile') }}"><i class="fas fa-user"></i></a>
+                        {% else %}
+                        <a class="nav-link mr-3 d-none text-dark d-lg-block mr-md-1" href="{{ path('app_login') }}"><i class="fas fa-user"></i></a>
+                        {% endif %}
                         <a class="nav-link ml-3 d-none text-dark d-lg-block ml-md-1" href="{{ path('cart_index') }}"><i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>

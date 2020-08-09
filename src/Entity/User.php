@@ -82,6 +82,7 @@ class User implements UserInterface
     {
         $this->orders = new ArrayCollection();
         $this->addresses = new ArrayCollection();
+        $this->registration_date = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -294,5 +295,10 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getFirstname().' '.$this->getLastname();
     }
 }
