@@ -10,7 +10,6 @@ use App\Entity\SubCategory;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
@@ -80,6 +79,17 @@ class HomeController extends AbstractController
         return $this->render('home/product.html.twig', [
             'categories' => $this->categories,
             'product' => $product,
+        ]);
+    }
+
+    /**
+     * @Route("/profile", name="profile")
+     * @return Response
+     */
+    public function profile(): Response
+    {
+        return $this->render('home/profile.html.twig', [
+            'categories' => $this->categories,
         ]);
     }
 }

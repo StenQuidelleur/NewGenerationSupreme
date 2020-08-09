@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\CategoryRepository;
 use App\Security\EmailVerifier;
 use App\Security\LoginAuthenticator;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -19,10 +20,12 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 class RegistrationController extends AbstractController
 {
     private $emailVerifier;
+    protected $categories;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EmailVerifier $emailVerifier, CategoryRepository $categories)
     {
         $this->emailVerifier = $emailVerifier;
+        $this->categories = $categories->findAll();
     }
 
     /**
@@ -67,6 +70,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'categories' => $this->categories
         ]);
     }
 

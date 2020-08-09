@@ -58,10 +58,11 @@ body {
 }
 
 .carousel-caption {
-    bottom: 40% !important;
+    bottom: 15% !important;
+    font-size: 60%;
 }
 
-.box .banner-category {
+.box {
     position: relative;
     text-align: center;
     color: white;
@@ -81,6 +82,10 @@ body {
     opacity: 0.3;
 }
 
+.banner-category {
+    position: relative;
+}
+
 .centered {
     position: absolute;
     top: 50%;
@@ -89,7 +94,6 @@ body {
     padding: 0 20px;
     background-color: rgba(26, 26, 26, 0.8);
     font-weight: bold;
-    font-size: 80px;
     color: #FFF;
 }
 
@@ -147,6 +151,13 @@ color: #FFF;
     }
     .subCateg-content {
         justify-content: space-between;
+    }
+    .carousel-caption {
+        bottom: 40% !important;
+        font-size: 100%;
+    }
+    .centered {
+        font-size: 80px;
     }
     .product-content {
         justify-content: unset;
