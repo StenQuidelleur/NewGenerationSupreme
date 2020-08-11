@@ -3,12 +3,14 @@
 {% block body %}
     <div class="container mt-5">
         <h1>Validation de votre commande</h1>
+        {% if is_granted('ROLE_SUBSCRIBER') %}
+        {% else %}
         <p>Déjà client ? <a href="#">Cliquez ici pour vous identifier !</a></p>
+        {% endif %}
         <div class="row justify-content-between">
             <div class="col-md-7">
                 <hr>
-                <h3>Informations</h3>
-                {{ form_start(form) }}
+                <h3>Informations de facturation</h3>
                 {{ form_start(form) }}
                 <div class="row">
                     <div class="col">{{ form_row(form.firstname) }}</div>
@@ -19,6 +21,10 @@
                     <div class="col">{{ form_row(form.complement) }}</div>
                 </div>
                 {{ form_rest(form) }}
+                {% if shippingAddress != null %}
+                {% else %}
+                <a href="{{ path('app_login') }}">Expédier à une address différente ?</a>
+                {% endif %}
             </div>
             <div class="col-md-4">
                 <div class="card bg-light">

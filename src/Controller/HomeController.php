@@ -4,10 +4,15 @@
 namespace App\Controller;
 
 
+use App\Entity\User;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\SubCategory;
+use App\Form\AddressType;
+use App\Form\UserType;
+use App\Repository\AddressRepository;
 use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,7 +70,9 @@ class HomeController extends AbstractController
             'categories' => $this->categories,
             'products' => $products,
             'category' => $category,
-            'subCategories' => $subCategories
+            'subCategories' => $subCategories,
+            'subCateg' => $subCategory
+
         ]);
     }
 
@@ -84,11 +91,43 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/profile", name="profile")
+     * @param AddressRepository $address
+     * @param Request $request
      * @return Response
      */
-    public function profile(): Response
+    public function profile(AddressRepository $address, Request $request): Response
     {
+        $shippingAddress = $address->findOneBy(['user' => $this->getUser(),'shipping_address' => 1]);
+        $billingAddress = $address->findOneBy(['user' => $this->getUser(),'billing_address' => 1]);
+
         return $this->render('home/profile.html.twig', [
+            'categories' => $this->categories,
+            'user' => $this->getUser(),
+            'shippingAddress' => $shippingAddress,
+            'billingAddress' => $billingAddress
+        ]);
+    }
+
+    /**
+     * @Route("/editProfile/{id}", name="profile_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function editProfile(Request $request, User $user): Response
+    {
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('profile');
+        }
+
+        return $this->render('home/editProfile.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
             'categories' => $this->categories,
         ]);
     }

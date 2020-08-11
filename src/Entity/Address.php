@@ -40,12 +40,12 @@ class Address
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $City;
+    private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Country;
+    private $country;
 
     /**
      * @ORM\Column(type="integer")
@@ -138,24 +138,24 @@ class Address
 
     public function getCity(): ?string
     {
-        return $this->City;
+        return $this->city;
     }
 
-    public function setCity(string $City): self
+    public function setCity(string $city): self
     {
-        $this->City = $City;
+        $this->city = $city;
 
         return $this;
     }
 
     public function getCountry(): ?string
     {
-        return $this->Country;
+        return $this->country;
     }
 
-    public function setCountry(string $Country): self
+    public function setCountry(string $country): self
     {
-        $this->Country = $Country;
+        $this->country = $country;
 
         return $this;
     }

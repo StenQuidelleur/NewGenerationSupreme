@@ -4,14 +4,60 @@
 
 {% block body %}
 <div class="container mt-5">
-    <h1 class="text-center">Mon Profile</h1>
+    <h1 class="text-center title">Mon Profile</h1>
+    <a class="float-right" href="{{ path('app_logout') }}">Déconnexion</a>
     <div class="row mt-5 justify-content-between">
-        <div class="col-md-6">
+        <div class="col-md-5 mt-5">
             <h3>Histoique de commande</h3>
         </div>
-        <div class="col-md-6">
-            <h3>Information du Profile</h3>
-
+        <div class="col-md-7 mt-5">
+            <h3 class="text-center mb-5 font-weight-bold">Informations</h3>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p><strong>Nom :</strong> {{ user.firstname }}</p>
+                    <p><strong>Prénom :</strong> {{ user.lastname }}</p>
+                    <p><strong>Email :</strong> {{ user.email }}</p>
+                </div>
+                <div>
+                    <p><strong>Naissance :</strong> {{ user.dateBirth }}</p>
+                    <p><strong>Téléphone :</strong> {{ user.phone }}</p>
+                </div>
+                <div>
+                    <a href="{{ path('profile_edit', {'id': user.id}) }}">Modifier</a>
+                </div>
+            </div>
+            <div class="d-flex mt-5 justify-content-between">
+                <div>
+                    <h5 class="mb-3 font-weight-bold">Addresse de livraison :</h5>
+                    {% if shippingAddress != null %}
+                        <p>{{ shippingAddress.firstname }} {{ shippingAddress.lastname }}</p>
+                        <p>{{ shippingAddress.street }}</p>
+                        <p>{{ shippingAddress.complement }}</p>
+                        <p>{{ shippingAddress.zipCode }}</p>
+                        <p>{{ shippingAddress.city }}</p>
+                        <p>{{ shippingAddress.country }}</p>
+                        <p>{{ shippingAddress.phone }}</p>
+                        <a href="{{ path('shippingAddress_edit', {'id': shippingAddress.id}) }}">Modifier</a>
+                    {% else %}
+                    <a class="btn btn-primary" href="{{ path('address_newShipping') }}">Ajouter une adresse</a>
+                    {% endif %}
+                </div>
+                <div>
+                    <h5 class="mb-3 font-weight-bold">Addresse de facturation :</h5>
+                    {% if billingAddress != null %}
+                        <p>{{ billingAddress.firstname }} {{ billingAddress.lastname }}</p>
+                        <p>{{ billingAddress.street }}</p>
+                        <p>{{ billingAddress.complement }}</p>
+                        <p>{{ billingAddress.zipCode }}</p>
+                        <p>{{ billingAddress.city }}</p>
+                        <p>{{ billingAddress.country }}</p>
+                        <p>{{ billingAddress.phone }}</p>
+                        <a href="{{ path('billingAddress_edit', {'id': billingAddress.id}) }}">Modifier</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{{ path('address_newBilling') }}">Ajouter une adresse</a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>

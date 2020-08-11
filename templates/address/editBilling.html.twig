@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}-Address{% endblock %}
+
+{% block body %}
+<div class="container col-md-6">
+    <h1 class="text-center my-5">Modifier l'Addresse de facturation</h1>
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col">{{ form_row(form.firstname) }}</div>
+        <div class="col">{{ form_row(form.lastname) }}</div>
+    </div>
+    <div class="row">
+        <div class="col">{{ form_row(form.street) }}</div>
+        <div class="col">{{ form_row(form.complement) }}</div>
+    </div>
+    {{ form_row(form.city) }}
+    {{ form_row(form.country) }}
+    {{ form_row(form.zip_code) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.company_name) }}
+    {{ form_widget(form.shipping_comment, {'attr': {'class': 'd-none'}}) }}
+    <button class="btn btn-success">{{ button_label|default('Modifier') }}</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
