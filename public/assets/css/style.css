@@ -97,6 +97,14 @@ body {
     color: #FFF;
 }
 
+.title {
+    background-color: rgba(26, 26, 26, 0.8);
+    font-weight: bold;
+    color: #FFF;
+    margin: 0 37%;
+    padding: 0.3%;
+}
+
 .subCateg-content {
     justify-content: center;
 }
@@ -148,9 +156,6 @@ color: #FFF;
     }
     .logo {
         font-size: 40px;
-    }
-    .subCateg-content {
-        justify-content: space-between;
     }
     .carousel-caption {
         bottom: 40% !important;

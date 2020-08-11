@@ -5,17 +5,17 @@
         <img class="d-block w-100" src="https://i.postimg.cc/T2CMZyV2/Webp-net-resizeimage-1.jpg" alt="">
         <h1 class="centered">{{ category.name }}</h1>
     </div>
-    <div class="container mt-5">
+    <div class="container d-flex mt-5">
         <div class="row no-gutters subCateg-content">
             {% for subCateg in subCategories %}
-                <a href="{{ path('subCategory_index', {'id': subCateg.id}) }}" class="subCateg mb-5">
-                    <div class="card card-product " style="width: 18rem;">
-                        <img src="{{ subCateg.image }}" class="card-img-top card-product-image" alt="...">
-                        <div class="card-body card-body-product my-2">
-                            <h5 class="card-title text-center">{{ subCateg.name }}</h5>
-                        </div>
+                    <div class="card card-product mx-4 mb-5" style="width: 18rem;">
+                        <a href="{{ path('subCategory_index', {'id': subCateg.id}) }}" class="subCateg">
+                            <img src="{{ subCateg.image }}" class="card-img-top card-product-image" alt="...">
+                            <div class="card-body card-body-product my-2">
+                                <h5 class="card-title font-weight-bold text-center">{{ subCateg.name }}</h5>
+                            </div>
+                        </a>
                     </div>
-                </a>
             {% endfor %}
         </div>
     </div>
