@@ -60,10 +60,16 @@ class Product
      */
     private $subCategory;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Tag::class, mappedBy="product")
+     */
+    private $tags;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -201,6 +207,34 @@ class Product
     public function setSubCategory(?SubCategory $subCategory): self
     {
         $this->subCategory = $subCategory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+            $tag->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+            $tag->removeProduct($this);
+        }
 
         return $this;
     }

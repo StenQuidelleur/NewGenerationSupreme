@@ -9,6 +9,7 @@ use App\Entity\ShippingMethod;
 use App\Entity\Status;
 use App\Entity\Stock;
 use App\Entity\SubCategory;
+use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -27,7 +28,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create();
 
-        $categories = ['Skate','Vêtements','Accessoires','Protections','Graffiti','Goodies'];
+        $categories = ['Skate','Longboard','Vêtements','Accessoires','Protections','Graffiti','Goodies'];
         $categoriesArray = [];
         foreach ($categories as $item) {
             $category = new Category();

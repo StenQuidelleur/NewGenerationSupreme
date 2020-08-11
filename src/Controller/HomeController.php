@@ -9,9 +9,11 @@ use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\SubCategory;
 use App\Form\AddressType;
+use App\Form\SearchByTagType;
 use App\Form\UserType;
 use App\Repository\AddressRepository;
 use App\Repository\CategoryRepository;
+use App\Service\search\SearchService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -129,6 +131,28 @@ class HomeController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
             'categories' => $this->categories,
+        ]);
+    }
+
+    /**
+     * @Route("/searchProduct", name="product_search")
+     * @param SearchService $search
+     * @return Response
+     */
+    public function searchProduct(SearchService $search): Response
+    {
+        $products = null;
+        $searchEmpty = 'Désolé nous n\'avons pas trouvé ce que vous cherchez !';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST['name'];
+            $products = $search->searchByTagProduct($data);
+        } else {
+            $products = 'produits';//$this->getDoctrine()->getRepository(Product::class)->findAll();
+        }
+
+        return $this->render('home/search.html.twig', [
+            'categories' => $this->categories,
+            'products' => $products
         ]);
     }
 }
