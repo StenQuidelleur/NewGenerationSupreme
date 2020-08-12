@@ -8,11 +8,10 @@ use App\Entity\User;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\SubCategory;
-use App\Form\AddressType;
-use App\Form\SearchByTagType;
 use App\Form\UserType;
 use App\Repository\AddressRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use App\Service\search\SearchService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,15 +41,22 @@ class HomeController extends AbstractController
     /**
      * @Route("/category/{id}", name="category_index")
      * @param Category $category
+     * @param ProductRepository $product
      * @return Response
      */
-    public function getCategory(Category $category): Response
+    public function getCategory(Category $category, ProductRepository $product): Response
     {
         $subCategories = $category->getSubCategories();
+        $items = [];
+        foreach ($subCategories as $categ) {
+            $items[] = $product->findBy(['subCategory' => $categ]);
+        }
+
         return $this->render('home/category.html.twig', [
             'categories' => $this->categories,
             'category' => $category,
-            'subCategories' => $subCategories
+            'subCategories' => $subCategories,
+            'items' => $items
         ]);
     }
 

@@ -71,5 +71,4 @@ class OrderController extends AbstractController
             'shippingAddress' => $shippingAddress
         ]);
     }
-
 }

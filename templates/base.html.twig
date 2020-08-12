@@ -16,7 +16,7 @@
             <a class="navbar-brand logo" href="{{ path("home_index") }}">NGS</a>
             <div class="d-flex">
                 <div class="navbar-nav mx-4 nav-user d-flex justify-content-center">
-                    <a class="nav-link mr-4 text-dark" href="{{ path('product_search') }}"><i class="fas fa-search"></i></a>
+                    <a class="nav-link mr-4 text-dark d-lg-none mr-lg-1" href="{{ path('product_search') }}"><i class="fas fa-search"></i></a>
                     {% if is_granted('ROLE_SUBSCRIBER') %}
                     <a class="nav-link mr-2 text-dark d-lg-none mr-lg-1" href="{{ path('profile') }}"><i class="fas fa-user"></i></a>
                     {% else %}
@@ -45,8 +45,8 @@
                     </li>
                 </ul>
                 <div class="d-md-flex">
-                    <a class="nav-link text-dark" href="{{ path('product_search') }}"><i class="fas fa-search"></i></a>
                     <div class="navbar-nav mx-4 nav-user d-flex justify-content-center">
+                        <a class="nav-link d-none text-dark d-lg-block mr-md-3" href="{{ path('product_search') }}"><i class="fas fa-search"></i></a>
                         {% if is_granted('ROLE_SUBSCRIBER') %}
                         <a class="nav-link mr-3 d-none text-dark d-lg-block mr-md-1" href="{{ path('profile') }}"><i class="fas fa-user"></i></a>
                         {% else %}
