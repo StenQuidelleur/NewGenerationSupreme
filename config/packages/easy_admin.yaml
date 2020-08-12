@@ -1,0 +1,207 @@
+easy_admin:
+    disabled_actions: ['show']
+    site_name: '<h1 style="font-family: Noto Serif, serif; color: #FFF;" >NewGenerationSupreme</h1>'
+    formats:
+      datetime: 'd/m/Y'
+    design:
+      assets:
+        css:
+          - 'assets/css/admin.css'
+
+      menu:
+        - {entity: 'Banner', icon: 'images'}
+        - {entity: 'Category', icon: 'book'}
+        - {entity: 'SubCategory', icon: 'book-open'}
+        - {entity: 'Image', icon: 'images'}
+        - {entity: 'Order', icon: 'calendar-alt'}
+        - {entity: 'Product', icon: 'sitemap'}
+        - {entity: 'ShippingMethod', icon: 'truck'}
+        - {entity: 'Stock', icon: 'box'}
+        - {entity: 'Tag', icon: 'tags'}
+        - {entity: 'User', icon: 'users'}
+
+    entities:
+      Banner:
+        class: App\Entity\Banner
+        list:
+          fields:
+            - id
+            - { property: 'image', type: 'image', base_path: '%uploads_path%' }
+            - title
+            - description
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+        show:
+          fields:
+            - { property: 'image', type: 'image', base_path: '%uploads_path%' }
+        form:
+          fields:
+            - { property: 'imageFile', type: 'vich_image' }
+            - title
+            - description
+
+
+      Category:
+        class: App\Entity\Category
+        list:
+          fields:
+            - id
+            - name
+            - { property: 'image', type: 'image', base_path: '%uploads_path%'}
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+        show:
+          fields:
+            - { property: 'image', type: 'image', base_path: '%uploads_path%' }
+        form:
+          fields:
+            - { property: 'imageFile', type: 'vich_image' }
+            - { property: 'images', type: 'collection', type_options: {entry_type: 'App\Form\ImagesType', by_reference: false} }
+            - name
+            - subCategories
+
+
+      SubCategory:
+        class: App\Entity\SubCategory
+        list:
+          fields:
+            - id
+            - name
+            - category
+            - { property: 'image', type: 'image', base_path: '%uploads_path%'}
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+        show:
+          fields:
+            - { property: 'image', type: 'image', base_path: '%uploads_path%' }
+        form:
+          fields:
+            - { property: 'imageFile', type: 'vich_image' }
+            - { property: 'images', type: 'collection', type_options: {entry_type: 'App\Form\ImagesType', by_reference: false} }
+            - name
+            - category
+
+      Image:
+        class: App\Entity\Image
+        list:
+          fields:
+            - id
+            - { property: 'image', type: 'image', base_path: '%uploads_path%' }
+            - product
+            - banner
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+        show:
+          fields:
+            - { property: 'image', type: 'image', base_path: '%uploads_path%' }
+        form:
+          fields:
+            - { property: 'imageFile', type: 'vich_image' }
+            - product
+            - banner
+
+
+      Order:
+        class: App\Entity\Order
+        list:
+          fields:
+            - id
+            - reference
+            - date
+            - status
+            - shipping_date
+            - shipping_methode
+            - orderProducts
+            - user
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+
+
+      Product:
+        class: App\Entity\Product
+        list:
+          fields:
+            - id
+            - name
+            - price
+            - description
+            - stock
+            #- { property: 'images', type: 'image', base_path: '%uploads_path%' }
+            - status
+            - subCategory
+            #- tags
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+        show:
+          fields:
+            - { property: 'images', type: 'image', base_path: '%uploads_path%' }
+        form:
+          fields:
+            - { property: 'images', type: 'collection', type_options: {entry_type: 'App\Form\ImagesType', by_reference: false} }
+            - name
+            - price
+            - description
+            - subCategory
+            - tags
+
+
+      ShippingMethod:
+        class: App\Entity\ShippingMethod
+        list:
+          fields:
+            - id
+            - type
+            - price
+            - orders
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+
+
+      Stock:
+        class: App\Entity\Stock
+        list:
+          fields:
+            - id
+            - quantity
+            - minimum
+            - product
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+
+
+      Tag:
+        class: App\Entity\Tag
+        list:
+          fields:
+            - id
+            - name
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+
+
+      User:
+        class: App\Entity\User
+        list:
+          fields:
+            - id
+            - firstname
+            - lastname
+            - date_brith
+            - email
+            - phone
+            - registration_date
+            - is_verified
+            - orders
+            - addresses
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}

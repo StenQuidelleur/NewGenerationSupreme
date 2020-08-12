@@ -82,7 +82,7 @@ class User implements UserInterface
     {
         $this->orders = new ArrayCollection();
         $this->addresses = new ArrayCollection();
-        $this->registration_date = new \DateTimeImmutable();
+        $this->registration_date = new \DateTime('now');
     }
 
     public function getId(): ?int

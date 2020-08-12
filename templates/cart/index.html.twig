@@ -23,13 +23,13 @@
                         <td>{{ item.product.name }}</td>
                         <td>{{ item.product.price }} €</td>
                         <td>
-                            <a class="js-removeQuantity" href="{{ path('ajax-removeQuantity', {'id': item.product.id}) }}"><i class="fas fa-minus"></i></a>
+                            <a class="js-removeQuantity text-dark" href="{{ path('ajax-removeQuantity', {'id': item.product.id}) }}"><i class="fas fa-minus"></i></a>
                             <span class="js-item-quantity px-3">{{ item.quantity }}</span>
-                            <a class="js-addQuantity" href="{{ path('ajax-addQuantity', {'id': item.product.id}) }}"><i class="fas fa-plus"></i></a>
+                            <a class="js-addQuantity text-dark" href="{{ path('ajax-addQuantity', {'id': item.product.id}) }}"><i class="fas fa-plus"></i></a>
                         </td>
                         <td class="js-total-item">{{ item.product.price * item.quantity }} €</td>
                         <td>
-                            <a href="{{ path('cart_remove',{'id':item.product.id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                            <a href="{{ path('cart_remove',{'id':item.product.id}) }}" class="btn btn-sm"><i class="fas fa-times"></i></i></a>
                         </td>
                     </tr>
                 {% endfor %}
