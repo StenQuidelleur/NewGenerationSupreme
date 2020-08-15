@@ -35,11 +35,8 @@
                 {% endfor %}
                 </tbody>
             </table>
-        {% else %}
-            <h5>Votre panier est vide !</h5>
-        {% endif %}
             <div class="col-md-4">
-                <div class="card bg-light">
+                <div class="card bg-white card-detail">
                     <div class="card-body">
                         <h3>Total Panier</h3>
                         <hr>
@@ -51,11 +48,14 @@
                         <h5 class="font-weight-bold">Total</h5>
                         <p class="text-right">Total : <strong>{{ total + shipping.price }} €</strong></p>
                         <div class="col text-center mt-4">
-                            <a href="{{ path('order_index') }}" class="btn btn-primary">Commander</a>
+                            <a href="{{ path('order_index') }}" class="btn btn-dark">Commander</a>
                         </div>
                     </div>
                 </div>
             </div>
+        {% else %}
+            <h5>Votre panier est vide !</h5>
+        {% endif %}
         </div>
     </div>
 {% endblock %}

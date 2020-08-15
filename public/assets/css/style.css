@@ -76,8 +76,6 @@ body {
     background-color: rgba(26, 26, 26, 0.8);
     font-weight: bold;
     color: #FFF;
-    margin: 0 37%;
-    padding: 0.3%;
 }
 
 .subCateg-content {
@@ -116,6 +114,17 @@ body {
     padding: unset;
 }
 
+.card-detail {
+    border: 1px solid black;
+    border-radius: unset;
+}
+
+.credit-card {
+    padding: 10px 10px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
 .footer {
 font-size: 12px;
 }
@@ -131,6 +140,10 @@ color: #FFF;
     }
     .logo {
         font-size: 40px;
+    }
+    .title {
+        margin: 0 33%;
+        padding: 0.3%;
     }
     .dropdown {
         position: relative;

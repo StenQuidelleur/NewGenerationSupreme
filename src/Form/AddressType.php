@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +18,7 @@ class AddressType extends AbstractType
         $builder
             ->add('firstname', TextType::class, ['label' => 'Prénom *'])
             ->add('lastname', TextType::class, ['label' => 'Nom *'])
+            ->add('email', EmailType::class, ['label' => 'Email *'])
             ->add('street', TextType::class, ['label' => 'Numéro et nom de la rue *'])
             ->add('complement', TextType::class, ['label' => 'Complément','required' => false])
             ->add('city', TextType::class, ['label' => 'Ville *'])
@@ -25,9 +27,6 @@ class AddressType extends AbstractType
             ->add('phone', TextType::class, ['label' => 'Téléphone *'])
             ->add('company_name', TextType::class, ['label' => 'Nom de l\'entreprise (facultatif)', 'required' => false ])
             ->add('shipping_comment', TextareaType::class, ['label' => 'Commentaire de livraison', 'required' => false])
-            //->add('shipping_address', CheckboxType::class, ['label' => 'Addresse de livraison', 'required' => false])
-            //->add('billing_address', CheckboxType::class, ['label' => 'Addresse de facturation', 'required' => false])
-            //->add('user')
         ;
     }
 
