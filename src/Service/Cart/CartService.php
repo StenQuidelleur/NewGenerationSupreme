@@ -39,6 +39,17 @@ class CartService
         $this->session->set('panier',$panier);
     }
 
+    public function removeAll()
+    {
+        $panier = $this->session->get('panier', []);
+
+        if (!empty($panier)) {
+            $panier = [];
+        }
+
+        $this->session->set('panier',$panier);
+    }
+
     public function removeQuantity(int $id)
     {
         $panier = $this->session->get('panier', []);
