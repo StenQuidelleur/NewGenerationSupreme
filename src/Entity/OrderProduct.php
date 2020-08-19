@@ -29,6 +29,11 @@ class OrderProduct
      */
     private $order_user;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantity;
+
     public function getProduct(): ?Product
     {
         return $this->product;
@@ -49,6 +54,18 @@ class OrderProduct
     public function setOrderUser(?Order $order_user): self
     {
         $this->order_user = $order_user;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

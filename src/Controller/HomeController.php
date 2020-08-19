@@ -11,6 +11,7 @@ use App\Entity\SubCategory;
 use App\Form\UserType;
 use App\Repository\AddressRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Service\search\SearchService;
 use Symfony\Component\HttpFoundation\Request;
@@ -101,18 +102,21 @@ class HomeController extends AbstractController
      * @Route("/profile", name="profile")
      * @param AddressRepository $address
      * @param Request $request
+     * @param OrderRepository $order
      * @return Response
      */
-    public function profile(AddressRepository $address, Request $request): Response
+    public function profile(AddressRepository $address, Request $request, OrderRepository $order): Response
     {
         $shippingAddress = $address->findOneBy(['user' => $this->getUser(),'shipping_address' => 1]);
         $billingAddress = $address->findOneBy(['user' => $this->getUser(),'billing_address' => 1]);
+        $orders = $order->findBy(['user' => $this->getUser()]);
 
         return $this->render('home/profile.html.twig', [
             'categories' => $this->categories,
             'user' => $this->getUser(),
             'shippingAddress' => $shippingAddress,
-            'billingAddress' => $billingAddress
+            'billingAddress' => $billingAddress,
+            'orders' => $orders
         ]);
     }
 
@@ -161,5 +165,4 @@ class HomeController extends AbstractController
             'products' => $products
         ]);
     }
-
 }

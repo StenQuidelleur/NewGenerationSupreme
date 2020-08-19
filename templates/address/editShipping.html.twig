@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container col-md-6">
-    <h1 class="text-center my-5">Modifier l'Addresse de livraison</h1>
+    <h1 class="text-center my-5">Modifier l'Adresse de livraison</h1>
     {{ form_start(form) }}
     <div class="row">
         <div class="col">{{ form_row(form.firstname) }}</div>
@@ -14,7 +14,9 @@
         <div class="col">{{ form_row(form.street) }}</div>
         <div class="col">{{ form_row(form.complement) }}</div>
     </div>
+    {{ form_widget(form.email, {'attr': {'class': 'd-none'}}) }}
     {{ form_rest(form) }}
+
     <button class="btn btn-success">{{ button_label|default('Modifier') }}</button>
     {{ form_end(form) }}
 </div>
