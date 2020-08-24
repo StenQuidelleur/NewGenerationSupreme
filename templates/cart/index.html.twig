@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}-Panier{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-5 text-center title">Votre panier</h1>
+        <div class="row justify-content-between">
+            {% if items | length > 0 %}
+                <table class="table col-md-7">
+                    <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in items %}
+                        <tr class="js-item">
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.product.price }} €</td>
+                            <td>
+                                <a class="js-removeQuantity text-dark" href="{{ path('ajax-removeQuantity', {'id': item.product.id}) }}"><i class="fas fa-minus"></i></a>
+                                <span class="js-item-quantity px-3">{{ item.quantity }}</span>
+                                <a class="js-addQuantity text-dark" href="{{ path('ajax-addQuantity', {'id': item.product.id}) }}"><i class="fas fa-plus"></i></a>
+                            </td>
+                            <td class="js-total-item">{{ item.product.price * item.quantity }} €</td>
+                            <td>
+                                <a href="{{ path('cart_remove',{'id':item.product.id}) }}" class="btn btn-sm"><i class="fas fa-times"></i></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="col-md-4">
+                    <div class="card bg-white card-detail">
+                        <div class="card-body">
+                            <h3>Total Panier</h3>
+                            <hr>
+                            <p>Total des articles : <strong class="js-total">{{ total }} €</strong></p>
+                            <hr>
+                            <h5>Livraison</h5>
+                            <p>{{ shipping.type }}: <strong>{{ shipping.price }} €</strong></p>
+                            <hr>
+                            <h5 class="font-weight-bold">Total</h5>
+                            <p class="text-right">Total : <strong>{{ total + shipping.price }} €</strong></p>
+                            <div class="col text-center mt-4">
+                                <a href="{{ path('order_index') }}" class="btn btn-dark">Commander</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <h5>Votre panier est vide !</h5>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        var tdTotal = document.querySelector('strong.js-total')
+        document.querySelectorAll('tr.js-item').forEach(tr => {
+            tr.querySelector('a.js-addQuantity').addEventListener('click', e => {
+                e.preventDefault()
+                var spanQuantity = tr.querySelector('span.js-item-quantity')
+                var tdTotalItem = tr.querySelector('td.js-total-item')
+                axios.get(tr.querySelector('a.js-addQuantity').href)
+                .then(response => {
+                    spanQuantity.textContent = response.data.quantity
+                    tdTotalItem.textContent = response.data.price + ' €'
+                    tdTotal.textContent = response.data.total + ' €'
+                })
+            })
+        })
+        document.querySelectorAll('tr.js-item').forEach(tr => {
+            tr.querySelector('a.js-removeQuantity').addEventListener('click', e => {
+                e.preventDefault()
+                var spanQuantity = tr.querySelector('span.js-item-quantity')
+                var tdTotalItem = tr.querySelector('td.js-total-item')
+                axios.get(tr.querySelector('a.js-removeQuantity').href)
+                .then(response => {
+                    spanQuantity.textContent = response.data.quantity
+                    tdTotalItem.textContent = response.data.price + ' €'
+                    tdTotal.textContent = response.data.total + ' €'
+                })
+            })
+        })
+    </script>
+
+{% endblock %}

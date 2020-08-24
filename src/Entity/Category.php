@@ -28,7 +28,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category", cascade={"remove"})
      */
     private $subCategories;
 
@@ -38,15 +38,15 @@ class Category
     private $image;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="category")
-     */
-    private $images;
-
-    /**
-     * @Vich\UploadableField(mapping="category", fileNameProperty="images")
+     * @Vich\UploadableField(mapping="category", fileNameProperty="image")
      * @var File
      */
     private $imageFile;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="category", cascade={"persist"})
+     */
+    private $images;
 
     /**
      * @ORM\Column(type="datetime")
@@ -134,30 +134,34 @@ class Category
         return $this->images;
     }
 
-    public function addImage(Image $image): self
+    public function addImage(Image $images): self
     {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setCategory($this);
+        if (!$this->images->contains($images)) {
+            $this->images[] = $images;
+            $images->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeImage(Image $image): self
+    public function removeImage(Image $images): self
     {
-        if ($this->images->contains($image)) {
-            $this->images->removeElement($image);
+        if ($this->images->contains($images)) {
+            $this->images->removeElement($images);
             // set the owning side to null (unless already changed)
-            if ($image->getCategory() === $this) {
-                $image->setCategory(null);
+            if ($images->getCategory() === $this) {
+                $images->setCategory(null);
             }
         }
 
         return $this;
     }
 
-    public function setImageFile(File $image = null)
+    /**
+     * @param $image
+     * @throws \Exception
+     */
+    public function setImageFile($image) :void
     {
         $this->imageFile = $image;
 

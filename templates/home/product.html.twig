@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% include 'home/news.html.twig' %}
     <div class="container mt-3 d-flex justify-content-center">
         {% for category, messages in app.flashes %}
             {% for message in messages %}

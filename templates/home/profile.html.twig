@@ -3,32 +3,64 @@
 {% block title %}-Mon Profile{% endblock %}
 
 {% block body %}
+{% include 'home/news.html.twig' %}
 <div class="container mt-5">
     <h1 class="text-center title">Mon Profile</h1>
     <a class="float-right" href="{{ path('app_logout') }}">Déconnexion</a>
     <div class="row mt-5 justify-content-between">
         <div class="col-md-6 mt-5">
             <h3>Mes commandes</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Référence</th>
-                        <th scope="col">Détails</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for order in orders %}
-                    <tr>
-                        <td>{{ order.date | date("d/m/Y") }}</td>
-                        <td>{{ order.status }}</td>
-                        <td>{{ order.reference }}</td>
-                        <td><a href=""><i class="fas fa-2x fa-file-pdf"></i></a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            <a class="btn btn-dark my-3" data-toggle="collapse" href="#myOrders" role="button" aria-expanded="false" aria-controls="myOrders">Voir mes commandes</a>
+            <div class="collapse" id="myOrders">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Référence</th>
+                            <th scope="col">Détails</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.date | date("d/m/Y") }}</td>
+                            <td>{{ order.status }}</td>
+                            <td>{{ order.reference }}</td>
+                            <td>
+                                <a data-toggle="collapse" href="#{{ order.reference }}" role="button" aria-expanded="false" aria-controls="{{ order.reference }}">Détails</a>
+                            </td>
+                        </tr>
+                        <tr class="collapse" id="{{ order.reference }}">
+                            <td colspan="5">
+                                <div class="card card-body">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Produit</th>
+                                            <th>Quantité</th>
+                                            <th>Prix ( € )</th>
+                                            <th>Total (TTC)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in items %}
+                                            <tr>
+                                                <td><a href="{{ path('product_index', {'id': item.product.id}) }}">{{ item.product.name }}</a></td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>{{ item.product.price }}</td>
+                                                <td>{{ item.quantity * item.product.price }} €</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="col-md-6 mt-5">
             <h3 class="text-center mb-5 font-weight-bold">Informations</h3>

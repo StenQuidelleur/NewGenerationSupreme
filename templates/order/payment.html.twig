@@ -101,16 +101,13 @@
             //Var
             let stripe = Stripe('pk_test_51HG5BSDtJEs1xZocKB9iRFNyyjuJAwOJ4IeZuHA5Ef94t1bwmMrvFDgS6oB29hvGenIFvy3FDCayib8FYsDdl9a200Qu20BGFr')
             let elements = stripe.elements()
-
             //Object
             let cardHolderName = document.getElementById('cardholder-name')
             let cardButton = document.getElementById('card-button')
             let clientSecret = cardButton.dataset.secret
-
             //form elements
             let card = elements.create("card")
             card.mount("#card-elements")
-
             // The capture
             card.addEventListener("change", (event) => {
                 let displayError = document.getElementById("card-errors")
@@ -120,7 +117,6 @@
                     displayError.textContent = "";
                 }
             })
-
             //Payment
             cardButton.addEventListener("click", () => {
                 stripe.handleCardPayment(
@@ -137,5 +133,4 @@
             })
         }
     </script>
-
 {% endblock %}

@@ -125,8 +125,8 @@ class OrderController extends AbstractController
         ]);
         //Generate the order
         $panier = $this->cartService->getFullCart();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $order = new Order();
+        //if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            /*$order = new Order();
             if ($this->getUser() != null) {
                 $order->setUser($this->getUser());
             }
@@ -190,7 +190,7 @@ class OrderController extends AbstractController
             $this->cartService->removeAll();
 
             return $this->redirectToRoute('home_index');
-        }
+        }*/
 
         return $this->render('order/payment.html.twig', [
             'categories' => $this->categories,

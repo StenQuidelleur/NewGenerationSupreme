@@ -57,6 +57,36 @@ body {
     opacity: 0.3;
 }
 
+/* Banner Info */
+.news-defil {
+    max-width: 100%;
+    background-color: #111;
+    overflow: hidden;
+    color: aliceblue;
+    font-family: 'Ubuntu Mono', monospace;
+}
+.news-defil > :first-child {
+    display: inline-block;
+    padding-right: 2em;
+    padding-left: 100%;
+    white-space: nowrap;
+    animation: defilement-rtl 20s infinite linear;
+}
+@keyframes defilement-rtl {
+    0% {
+        transform: translate3d(0,0,0);      /* position initiale à gauche */
+    }
+    100% {
+        transform: translate3d(-100%,0,0);  /* position finale à droite */
+    }
+}
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+/* Banner Info */
+
 .banner-category {
     position: relative;
 }
