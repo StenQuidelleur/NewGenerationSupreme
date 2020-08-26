@@ -8,18 +8,19 @@
         <p>Déjà client ? <a href="{{ path('app_login') }}">Cliquez ici pour vous identifier !</a></p>
         {% endif %}
         <div class="row justify-content-between">
-            <div class="col-md-7">
+            <div class="col-md-7 mb-5">
                 <hr>
                 <h3 class="mb-4">Informations de facturation</h3>
                 {%  if billingAddress != null %}
                 <p><strong>Non et Prénom :</strong> {{ billingAddress.firstname }} {{ billingAddress.lastname }}</p>
                 <p><strong>Numéro et rue :</strong> {{ billingAddress.street }}</p>
-                <p><strong>Complement d'addresse :</strong> {{ billingAddress.complement }}</p>
+                <p><strong>Complement d'adresse :</strong> {{ billingAddress.complement }}</p>
+                <p><strong>Entreprise :</strong> {{ billingAddress.companyName}}</p>
                 <p><strong>Code postale : </strong>{{ billingAddress.zipCode }}</p>
                 <p><strong>Ville :</strong> {{ billingAddress.city }}</p>
                 <p><strong>Pays :</strong> {{ billingAddress.country }}</p>
                 <p><strong>Téléphone :</strong> {{ billingAddress.phone }}</p>
-                <a class="mb-3" href="{{ path('profile') }}">Modifier</a>
+                <a href="{{ path('profile') }}">Modifier</a>
                 {% else  %}
                     {{ form_start(form) }}
                     <div class="row">
@@ -34,7 +35,7 @@
                     {{ form_rest(form) }}
                     {% if shippingAddress != null %}
                     {% else %}
-                        <a href="{{ path('app_login') }}">Expédier à une address différente ?</a>
+                        <a href="{{ path('app_login') }}">Expédier à une adresse différente ?</a>
                     {% endif %}
                 {% endif %}
             </div>

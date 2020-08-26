@@ -26,9 +26,9 @@ class Banner
     private $description;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="banner", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255)
      */
-    private $Image;
+    private $image;
 
     /**
      * @Vich\UploadableField(mapping="banner", fileNameProperty="image")
@@ -64,14 +64,14 @@ class Banner
         return $this;
     }
 
-    public function getImage(): ?Image
+    public function getImage(): ?string
     {
-        return $this->Image;
+        return $this->image;
     }
 
-    public function setImage(?Image $Image): self
+    public function setImage(?string $image): self
     {
-        $this->Image = $Image;
+        $this->image = $image;
 
         return $this;
     }

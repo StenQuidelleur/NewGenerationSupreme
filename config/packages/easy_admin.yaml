@@ -9,18 +9,26 @@ easy_admin:
           - 'assets/css/admin.css'
 
       menu:
+        - {entity: 'News', icon: 'info'}
         - {entity: 'Banner', icon: 'images'}
         - {entity: 'Category', icon: 'book'}
         - {entity: 'SubCategory', icon: 'book-open'}
-        - {entity: 'Image', icon: 'images'}
         - {entity: 'Order', icon: 'calendar-alt'}
         - {entity: 'Product', icon: 'sitemap'}
         - {entity: 'ShippingMethod', icon: 'truck'}
         - {entity: 'Stock', icon: 'box'}
+        - {entity: 'Image', icon: 'box'}
         - {entity: 'Tag', icon: 'tags'}
         - {entity: 'User', icon: 'users'}
 
     entities:
+      News:
+        class: App\Entity\News
+        list:
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+
       Banner:
         class: App\Entity\Banner
         list:
@@ -39,8 +47,7 @@ easy_admin:
           fields:
             - { property: 'imageFile', type: 'vich_image' }
             - title
-            - description
-
+            - { property: 'description', type: 'text_editor'}
 
       Category:
         class: App\Entity\Category
@@ -60,8 +67,6 @@ easy_admin:
             - { property: 'imageFile', type: 'vich_image' }
             - { property: 'images', type: 'collection', type_options: {entry_type: 'App\Form\ImagesType', by_reference: false} }
             - name
-            - subCategories
-
 
       SubCategory:
         class: App\Entity\SubCategory
@@ -80,30 +85,8 @@ easy_admin:
         form:
           fields:
             - { property: 'imageFile', type: 'vich_image' }
-            - { property: 'images', type: 'collection', type_options: {entry_type: 'App\Form\ImagesType', by_reference: false} }
             - name
             - category
-
-      Image:
-        class: App\Entity\Image
-        list:
-          fields:
-            - id
-            - { property: 'image', type: 'image', base_path: '%uploads_path%' }
-            - product
-            - banner
-          actions:
-            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
-            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
-        show:
-          fields:
-            - { property: 'image', type: 'image', base_path: '%uploads_path%' }
-        form:
-          fields:
-            - { property: 'imageFile', type: 'vich_image' }
-            - product
-            - banner
-
 
       Order:
         class: App\Entity\Order
@@ -120,7 +103,6 @@ easy_admin:
           actions:
             - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
             - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
-
 
       Product:
         class: App\Entity\Product
@@ -146,10 +128,9 @@ easy_admin:
             - { property: 'images', type: 'collection', type_options: {entry_type: 'App\Form\ImagesType', by_reference: false} }
             - name
             - price
-            - description
+            - { property: 'description', type: 'text_editor'}
             - subCategory
-            - tags
-
+            - { property: 'tags', type_options: { by_reference: false }}
 
       ShippingMethod:
         class: App\Entity\ShippingMethod
@@ -158,11 +139,13 @@ easy_admin:
             - id
             - type
             - price
-            - orders
           actions:
             - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
             - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
-
+        form:
+          fields:
+            - type
+            - price
 
       Stock:
         class: App\Entity\Stock
@@ -175,7 +158,12 @@ easy_admin:
           actions:
             - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
             - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
-
+      Image:
+        class: App\Entity\Image
+        list:
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
 
       Tag:
         class: App\Entity\Tag
@@ -186,7 +174,9 @@ easy_admin:
           actions:
             - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
             - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
-
+        form:
+          fields:
+            - name
 
       User:
         class: App\Entity\User

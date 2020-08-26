@@ -59,6 +59,8 @@ class Order
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
+        $this->date = new \DateTime('now');
+        $this->reference = substr(str_shuffle('0123456789ABCDEFGHIJ'),0,10);
     }
 
     public function getId(): ?int

@@ -39,12 +39,12 @@ class Product
 
     /**
      * @ORM\OneToOne(targetEntity=Stock::class, inversedBy="product", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $stock;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product",  cascade={"persist", "remove"})
      */
     private $images;
 
@@ -76,7 +76,7 @@ class Product
     private $subCategory;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, mappedBy="product")
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="products")
      */
     private $tags;
 
@@ -84,6 +84,7 @@ class Product
     {
         $this->images = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
+        $this->updatedAt = new \DateTime('now');
         $this->tags = new ArrayCollection();
     }
 
@@ -97,19 +98,19 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?string
     {
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(?string $price): self
     {
         $this->price = $price;
 
@@ -121,7 +122,7 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -133,7 +134,7 @@ class Product
         return $this->stock;
     }
 
-    public function setStock(Stock $stock): self
+    public function setStock(?Stock $stock): self
     {
         $this->stock = $stock;
 
@@ -171,7 +172,7 @@ class Product
         return $this;
     }
 
-    public function setImageFile(File $image = null)
+    public function setImageFile(File $image): void
     {
         $this->imageFile = $image;
 
@@ -184,7 +185,7 @@ class Product
         }
     }
 
-    public function getImageFile()
+    public function getImageFile(): ?string
     {
         return $this->imageFile;
     }
@@ -244,6 +245,11 @@ class Product
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     /**
      * @return Collection|Tag[]
      */
@@ -256,7 +262,6 @@ class Product
     {
         if (!$this->tags->contains($tag)) {
             $this->tags[] = $tag;
-            $tag->addProduct($this);
         }
 
         return $this;
@@ -266,14 +271,8 @@ class Product
     {
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
-            $tag->removeProduct($this);
         }
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getName();
     }
 }

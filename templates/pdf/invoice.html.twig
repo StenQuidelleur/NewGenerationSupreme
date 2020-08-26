@@ -1,0 +1,92 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        body {
+            font-size: 80%;
+        }
+        p {
+            line-height: 70%;
+        }
+        .shipping {
+            margin-left: 400px;
+        }
+        .block{
+            margin-bottom: 30px;
+        }
+        .list-prod{
+            margin-top: -100px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <h2 class="mb-5">NewGenerationSupreme</h2>
+    <p class="mt-5"><strong>Référence de commande:</strong> {{ order.reference }}</p>
+    <p class="block"><strong>Date :</strong> {{ order.date | date("d/m/Y") }}</p>
+    <div class="row">
+        <div>
+            <p><strong>ADRESSES DE FACTURATION :</strong></p>
+            <p><strong>Nom: </strong>{{ infoClientB.firstname }}</p>
+            <p><strong>Prénom: </strong>{{ infoClientB.lastname }}</p>
+            <p><strong>Entreprise: </strong>{{ infoClientB.companyName }}</p>
+            <p><strong>Adresse: </strong>{{ infoClientB.street }}</p>
+            <p>{{ infoClientB.complement }}</p>
+            <p>{{ infoClientB.zipCode }} {{ infoClientB.city }}</p>
+            <p>{{ infoClientB.country }}</p>
+        </div>
+        <div class="shipping">
+            <p><strong>ADRESSES DE LIVRAISON :</strong></p>
+            <p><strong>Nom: </strong>{{ infoClientS.firstname }}</p>
+            <p><strong>Prénom: </strong>{{ infoClientS.lastname }}</p>
+            <p><strong>Entreprise: </strong>{{ infoClientS.companyName }}</p>
+            <p><strong>Adresse: </strong>{{ infoClientS.street }}</p>
+            <p>{{ infoClientS.complement }}</p>
+            <p>{{ infoClientS.zipCode }} {{ infoClientS.city }}</p>
+            <p>{{ infoClientS.country }}</p>
+        </div>
+    </div>
+    <div class="row ">
+        <table class="table table-striped list-prod">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix ( € )</th>
+                    <th>Total (TTC)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product.price }}</td>
+                    <td>{{ item.quantity * item.product.price }} €</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>Livraison : {{ shipping.type }}</td>
+                <td></td>
+                <td></td>
+                <td>{{ shipping.price }} €</td>
+            </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right">Total (TTC) : </td>
+                    <td>{{ total }} €</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -38,55 +38,52 @@ class Image
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="image")
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="images")
      */
     private $product;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Banner::class, mappedBy="Image", cascade={"persist", "remove"})
-     */
-    private $banner;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="images")
      */
     private $category;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="images")
-     */
-    private $subCategory;
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
-    public function setName(string $name): self
+    public function setImage(?string $image): self
     {
-        $this->image = $name;
+        $this->image = $image;
 
         return $this;
     }
 
-    public function setImageFile(File $image = null)
+    /**
+     * @param mixed $imageFile
+     * @throws \Exception
+     */
+    public function setImageFile(?File $imageFile): void
     {
-        $this->imageFile = $image;
+        $this->imageFile = $imageFile;
 
         // VERY IMPORTANT:
         // It is required that at least one field changes if you are using Doctrine,
         // otherwise the event listeners won't be called and the file is lost
-        if ($image) {
+        if ($imageFile) {
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTime('now');
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function getImageFile()
     {
         return $this->imageFile;
@@ -104,27 +101,9 @@ class Image
         return $this;
     }
 
-    public function getBanner(): ?Banner
-    {
-        return $this->banner;
-    }
-
-    public function setBanner(?Banner $banner): self
-    {
-        $this->banner = $banner;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newImage = null === $banner ? null : $this;
-        if ($banner->getImage() !== $newImage) {
-            $banner->setImage($newImage);
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
-        return $this->getName();
+        return strval($this->getImage());
     }
 
     public function getCategory(): ?Category
@@ -135,18 +114,6 @@ class Image
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    public function getSubCategory(): ?SubCategory
-    {
-        return $this->subCategory;
-    }
-
-    public function setSubCategory(?SubCategory $subCategory): self
-    {
-        $this->subCategory = $subCategory;
 
         return $this;
     }

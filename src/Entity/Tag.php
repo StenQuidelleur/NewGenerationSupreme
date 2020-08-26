@@ -25,7 +25,7 @@ class Tag
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="tags")
+     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="tags")
      */
     private $products;
 
@@ -51,6 +51,11 @@ class Tag
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     /**
      * @return Collection|Product[]
      */
@@ -63,6 +68,7 @@ class Tag
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
+            $product->addTag($this);
         }
 
         return $this;
@@ -72,13 +78,9 @@ class Tag
     {
         if ($this->products->contains($product)) {
             $this->products->removeElement($product);
+            $product->removeTag($this);
         }
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getName();
     }
 }
