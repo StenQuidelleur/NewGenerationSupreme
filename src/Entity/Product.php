@@ -44,7 +44,7 @@ class Product
     private $stock;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product",  cascade={"persist", "remove"})
      */
     private $images;
 
@@ -71,7 +71,7 @@ class Product
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products")
      */
     private $subCategory;
 
@@ -98,7 +98,7 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -110,7 +110,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(?string $price): self
     {
         $this->price = $price;
 
@@ -122,7 +122,7 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -134,7 +134,7 @@ class Product
         return $this->stock;
     }
 
-    public function setStock(Stock $stock): self
+    public function setStock(?Stock $stock): self
     {
         $this->stock = $stock;
 
@@ -172,7 +172,7 @@ class Product
         return $this;
     }
 
-    public function setImageFile(File $image = null)
+    public function setImageFile(File $image): void
     {
         $this->imageFile = $image;
 

@@ -38,7 +38,7 @@ class Image
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="image")
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="images")
      */
     private $product;
 
@@ -68,7 +68,7 @@ class Image
      * @param mixed $imageFile
      * @throws \Exception
      */
-    public function setImageFile(File $imageFile = null)
+    public function setImageFile(?File $imageFile): void
     {
         $this->imageFile = $imageFile;
 
