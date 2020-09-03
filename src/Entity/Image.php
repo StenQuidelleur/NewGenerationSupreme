@@ -64,26 +64,20 @@ class Image
         return $this;
     }
 
-    /**
-     * @param mixed $imageFile
-     * @throws \Exception
-     */
-    public function setImageFile(?File $imageFile): void
+
+    public function setImageFile(File $image = null)
     {
-        $this->imageFile = $imageFile;
+        $this->imageFile = $image;
 
         // VERY IMPORTANT:
         // It is required that at least one field changes if you are using Doctrine,
         // otherwise the event listeners won't be called and the file is lost
-        if ($imageFile) {
+        if ($image) {
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTime('now');
         }
     }
 
-    /**
-     * @return mixed
-     */
     public function getImageFile()
     {
         return $this->imageFile;

@@ -6,7 +6,6 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -38,21 +37,9 @@ class Product
     private $description;
 
     /**
-     * @ORM\OneToOne(targetEntity=Stock::class, inversedBy="product", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $stock;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product",  cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product",  cascade={"persist","remove"})
      */
     private $images;
-
-    /**
-     * @Vich\UploadableField(mapping="product", fileNameProperty="images")
-     * @var File
-     */
-    private $imageFile;
 
     /**
      * @ORM\Column(type="datetime")
@@ -80,12 +67,23 @@ class Product
      */
     private $tags;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=SubCategory2::class, inversedBy="products")
+     */
+    private $subCategory2;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Stock::class, mappedBy="product")
+     */
+    private $stocks;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
         $this->updatedAt = new \DateTime('now');
         $this->tags = new ArrayCollection();
+        $this->stocks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,18 +127,6 @@ class Product
         return $this;
     }
 
-    public function getStock(): ?Stock
-    {
-        return $this->stock;
-    }
-
-    public function setStock(?Stock $stock): self
-    {
-        $this->stock = $stock;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Image[]
      */
@@ -149,45 +135,27 @@ class Product
         return $this->images;
     }
 
-    public function addImage(Image $image): self
+    public function addImage(Image $images): self
     {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setProduct($this);
+        if (!$this->images->contains($images)) {
+            $this->images[] = $images;
+            $images->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeImage(Image $image): self
+    public function removeImage(Image $images): self
     {
-        if ($this->images->contains($image)) {
-            $this->images->removeElement($image);
+        if ($this->images->contains($images)) {
+            $this->images->removeElement($images);
             // set the owning side to null (unless already changed)
-            if ($image->getProduct() === $this) {
-                $image->setProduct(null);
+            if ($images->getProduct() === $this) {
+                $images->setProduct(null);
             }
         }
 
         return $this;
-    }
-
-    public function setImageFile(File $image): void
-    {
-        $this->imageFile = $image;
-
-        // VERY IMPORTANT:
-        // It is required that at least one field changes if you are using Doctrine,
-        // otherwise the event listeners won't be called and the file is lost
-        if ($image) {
-            // if 'updatedAt' is not defined in your entity, use another property
-            $this->updatedAt = new \DateTime('now');
-        }
-    }
-
-    public function getImageFile(): ?string
-    {
-        return $this->imageFile;
     }
 
     /**
@@ -271,6 +239,49 @@ class Product
     {
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
+        }
+
+        return $this;
+    }
+
+    public function getSubCategory2(): ?SubCategory2
+    {
+        return $this->subCategory2;
+    }
+
+    public function setSubCategory2(?SubCategory2 $subCategory2): self
+    {
+        $this->subCategory2 = $subCategory2;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Stock[]
+     */
+    public function getStocks(): Collection
+    {
+        return $this->stocks;
+    }
+
+    public function addStock(Stock $stock): self
+    {
+        if (!$this->stocks->contains($stock)) {
+            $this->stocks[] = $stock;
+            $stock->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Stock $stock): self
+    {
+        if ($this->stocks->contains($stock)) {
+            $this->stocks->removeElement($stock);
+            // set the owning side to null (unless already changed)
+            if ($stock->getProduct() === $this) {
+                $stock->setProduct(null);
+            }
         }
 
         return $this;

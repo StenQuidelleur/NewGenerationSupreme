@@ -62,10 +62,10 @@
             <tbody>
             {% for item in items %}
                 <tr>
-                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.stockProduct.product.name }}{% if item.stockProduct.size != null %} - {{ item.stockProduct.size }}{% endif %}</td>
                     <td>{{ item.quantity }}</td>
-                    <td>{{ item.product.price }}</td>
-                    <td>{{ item.quantity * item.product.price }} €</td>
+                    <td>{{ item.stockProduct.product.price}}</td>
+                    <td>{{ item.quantity * item.stockProduct.product.price }} €</td>
                 </tr>
             {% endfor %}
             <tr>

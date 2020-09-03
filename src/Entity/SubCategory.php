@@ -54,9 +54,15 @@ class SubCategory
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SubCategory2::class, mappedBy="subCategory", cascade={"remove"})
+     */
+    private $subCategory2s;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->subCategory2s = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,5 +158,36 @@ class SubCategory
     public function getImageFile()
     {
         return $this->imageFile;
+    }
+
+    /**
+     * @return Collection|SubCategory2[]
+     */
+    public function getSubCategory2s(): Collection
+    {
+        return $this->subCategory2s;
+    }
+
+    public function addSubCategory2(SubCategory2 $subCategory2): self
+    {
+        if (!$this->subCategory2s->contains($subCategory2)) {
+            $this->subCategory2s[] = $subCategory2;
+            $subCategory2->setSubcategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubCategory2(SubCategory2 $subCategory2): self
+    {
+        if ($this->subCategory2s->contains($subCategory2)) {
+            $this->subCategory2s->removeElement($subCategory2);
+            // set the owning side to null (unless already changed)
+            if ($subCategory2->getSubcategory() === $this) {
+                $subCategory2->setSubcategory(null);
+            }
+        }
+
+        return $this;
     }
 }

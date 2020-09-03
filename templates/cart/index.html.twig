@@ -20,23 +20,23 @@
                     <tbody>
                     {% for item in items %}
                         <tr class="js-item">
-                            <td>{{ item.product.name }}</td>
-                            <td>{{ item.product.price }} €</td>
+                            <td>{{ item.stockProduct.product.name }}{% if item.stockProduct.size != null %} - {{ item.stockProduct.size }}{% endif %}</td>
+                            <td>{{ item.stockProduct.product.price }} €</td>
                             <td>
-                                <a class="js-removeQuantity text-dark" href="{{ path('ajax-removeQuantity', {'id': item.product.id}) }}"><i class="fas fa-minus"></i></a>
+                                <a class="js-removeQuantity text-dark" href="{{ path('ajax-removeQuantity', {'id': item.stockProduct.id}) }}"><i class="fas fa-minus"></i></a>
                                 <span class="js-item-quantity px-3">{{ item.quantity }}</span>
-                                <a class="js-addQuantity text-dark" href="{{ path('ajax-addQuantity', {'id': item.product.id}) }}"><i class="fas fa-plus"></i></a>
+                                <a class="js-addQuantity text-dark" href="{{ path('ajax-addQuantity', {'id': item.stockProduct.id}) }}"><i class="fas fa-plus"></i></a>
                             </td>
-                            <td class="js-total-item">{{ item.product.price * item.quantity }} €</td>
+                            <td class="js-total-item">{{ item.stockProduct.product.price * item.quantity }} €</td>
                             <td>
-                                <a href="{{ path('cart_remove',{'id':item.product.id}) }}" class="btn btn-sm"><i class="fas fa-times"></i></i></a>
+                                <a href="{{ path('cart_remove',{'id':item.stockProduct.id}) }}" class="btn btn-sm"><i class="fas fa-times"></i></i></a>
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
                 <div class="col-md-4">
-                    <div class="card bg-white card-detail">
+                    <div class="card card-shadow bg-white card-detail">
                         <div class="card-body">
                             <h3>Total Panier</h3>
                             <hr>

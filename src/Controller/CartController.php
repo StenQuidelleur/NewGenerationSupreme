@@ -6,11 +6,11 @@ namespace App\Controller;
 
 use App\Repository\CategoryRepository;
 use App\Repository\ShippingMethodRepository;
+use App\Repository\StockRepository;
 use App\Service\Cart\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
@@ -31,6 +31,7 @@ class CartController extends AbstractController
     public function index(CartService $cartService, ShippingMethodRepository $shipping): Response
     {
         $shipping = $shipping->findAll();
+        //dd($cartService->getFullCart());
         return $this->render('cart/index.html.twig', [
             'categories' => $this->categories,
             'items' => $cartService->getFullCart(),
@@ -43,13 +44,15 @@ class CartController extends AbstractController
      * @Route("/panier/add/{id}", name="cart_add")
      * @param $id
      * @param CartService $cartService
+     * @param StockRepository $stock
      * @return Response
      */
-    public function add($id, CartService $cartService): Response
+    public function add($id, CartService $cartService, StockRepository $stock): Response
     {
         $cartService->add($id);
-        $this->addFlash('dark', 'Cet article a été ajouté à votre panier. ');
-        return $this->redirectToRoute('product_index', ['id'=>$id]);
+        $productId = $stock->findOneBy(['id' => $id])->getProduct()->getId();
+        $this->addFlash('white', 'Cet article a été ajouté à votre panier. ');
+        return $this->redirectToRoute('product_index', ['id' => $productId]);
     }
 
     /**

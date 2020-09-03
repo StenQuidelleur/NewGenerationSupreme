@@ -8,7 +8,7 @@
                 <img src="{{ asset('uploads/files/' ~ banners[0].image) }}" class="d-block w-100" alt="...">
                 <div class="carousel-caption ">
                     <h2 class="font-weight-bold">{{ banners[0].title }} </h2>
-                    <p>{{ banners[0].description }}</p>
+                    <p>{{ banners[0].description | raw }}</p>
                 </div>
             </div>
             {% for banner in banners | slice(1) %}
@@ -16,7 +16,7 @@
                 <img src="{{ asset('uploads/files/' ~ banner.image) }}" class="d-block w-100" alt="...">
                 <div class="carousel-caption ">
                     <h2 class="font-weight-bold">{{ banner.title }} </h2>
-                    <p>{{ banner.description }}</p>
+                    <p>{{ banner.description | raw }}</p>
                 </div>
             </div>
             {% endfor %}

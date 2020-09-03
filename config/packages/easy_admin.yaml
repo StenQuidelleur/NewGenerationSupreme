@@ -4,6 +4,9 @@ easy_admin:
     formats:
       datetime: 'd/m/Y'
     design:
+      form_theme:
+        - '@EasyAdmin/form/bootstrap_4.html.twig'
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
       assets:
         css:
           - 'assets/css/admin.css'
@@ -13,11 +16,12 @@ easy_admin:
         - {entity: 'Banner', icon: 'images'}
         - {entity: 'Category', icon: 'book'}
         - {entity: 'SubCategory', icon: 'book-open'}
+        - {entity: 'SubCategory2', icon: 'book-open'}
         - {entity: 'Order', icon: 'calendar-alt'}
         - {entity: 'Product', icon: 'sitemap'}
-        - {entity: 'ShippingMethod', icon: 'truck'}
+        - {entity: 'Size', icon: 'sitemap'}
         - {entity: 'Stock', icon: 'box'}
-        - {entity: 'Image', icon: 'box'}
+        - {entity: 'ShippingMethod', icon: 'truck'}
         - {entity: 'Tag', icon: 'tags'}
         - {entity: 'User', icon: 'users'}
 
@@ -47,7 +51,7 @@ easy_admin:
           fields:
             - { property: 'imageFile', type: 'vich_image' }
             - title
-            - { property: 'description', type: 'text_editor'}
+            - { property: 'description', type: 'fos_ckeditor'}
 
       Category:
         class: App\Entity\Category
@@ -88,8 +92,24 @@ easy_admin:
             - name
             - category
 
+      SubCategory2:
+        class: App\Entity\SubCategory2
+        list:
+          fields:
+            - id
+            - name
+            - subCategory
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+        form:
+          fields:
+            - name
+            - subCategory
+
       Order:
         class: App\Entity\Order
+        disabled_actions: ['new','edit','delete']
         list:
           fields:
             - id
@@ -100,9 +120,6 @@ easy_admin:
             - shipping_methode
             - orderProducts
             - user
-          actions:
-            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
-            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
 
       Product:
         class: App\Entity\Product
@@ -112,7 +129,6 @@ easy_admin:
             - name
             - price
             - description
-            - stock
             #- { property: 'images', type: 'image', base_path: '%uploads_path%' }
             - status
             - subCategory
@@ -128,9 +144,36 @@ easy_admin:
             - { property: 'images', type: 'collection', type_options: {entry_type: 'App\Form\ImagesType', by_reference: false} }
             - name
             - price
-            - { property: 'description', type: 'text_editor'}
+            - { property: 'description', type: 'fos_ckeditor'}
             - subCategory
+            - subCategory2
             - { property: 'tags', type_options: { by_reference: false }}
+
+      Size:
+        class: App\Entity\Size
+        list:
+          fields:
+            - id
+            - name
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
+        form:
+          fields:
+            - name
+
+      Stock:
+        class: App\Entity\Stock
+        list:
+          fields:
+            - id
+            - quantity
+            - minimum
+            - product
+            - size
+          actions:
+            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
 
       ShippingMethod:
         class: App\Entity\ShippingMethod
@@ -146,24 +189,6 @@ easy_admin:
           fields:
             - type
             - price
-
-      Stock:
-        class: App\Entity\Stock
-        list:
-          fields:
-            - id
-            - quantity
-            - minimum
-            - product
-          actions:
-            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
-            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
-      Image:
-        class: App\Entity\Image
-        list:
-          actions:
-            - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
-            - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-warning'}
 
       Tag:
         class: App\Entity\Tag
