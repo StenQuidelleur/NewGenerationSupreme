@@ -11,6 +11,7 @@ use App\Form\AddressType;
 use App\Repository\AddressRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\OrderProductRepository;
+use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ShippingMethodRepository;
 use App\Repository\StatusRepository;
@@ -21,6 +22,7 @@ use Dompdf\Options;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -56,10 +58,9 @@ class OrderController extends AbstractController
         if ($this->session->get('panier', []) == []) {
             return $this->redirectToRoute('home_index');
         }
-        //Render view
+        //Initialize infoClient no-login
         $shippingAddress = $this->address->findOneBy(['user' => $this->getUser(),'shipping_address' => 1]);
         $billingAddress = $this->address->findOneBy(['user' => $this->getUser(),'billing_address' => 1]);
-        //Initialize infoClient no-login
         $infoClient = $this->session->get('infoClient', []);
 
         $contact = new Address();
@@ -74,7 +75,7 @@ class OrderController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($contact);
                 $entityManager->flush();
-            } elseif ($this->getUser() == null){
+            } elseif ($this->getUser() == null) {
                 $infoClient = $this->session->set('infoClient', $contact);
             }
 
@@ -108,6 +109,7 @@ class OrderController extends AbstractController
         if ($this->session->get('panier', []) == []) {
             return $this->redirectToRoute('home_index');
         }
+
         //Render view
         $shippingAddress = $this->address->findOneBy(['user' => $this->getUser(),'shipping_address' => 1]);
         $billingAddress = $this->address->findOneBy(['user' => $this->getUser(),'billing_address' => 1]);
@@ -120,13 +122,14 @@ class OrderController extends AbstractController
         //This for the payment with Stripe
         \Stripe\Stripe::setApiKey('sk_test_51HG5BSDtJEs1xZocO9uG5lzD2uWOKRiTyCHEHLa7KAZ001VaWZnGinFTmqrTT9vtRPhPGaMzNH3xpYfeE0SRLadP00YJZgWg72');
         $intent = \Stripe\PaymentIntent::create([
-            'amount' => $total*100,
+            'amount' => $total * 100,
             'currency' => 'eur'
         ]);
+
         //Generate the order
         $panier = $this->cartService->getFullCart();
-        //if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            /*$order = new Order();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $order = new Order();
             if ($this->getUser() != null) {
                 $order->setUser($this->getUser());
             }
@@ -138,19 +141,20 @@ class OrderController extends AbstractController
             foreach ($panier as $item) {
                 $orderProduct = new OrderProduct();
                 $orderProduct->setOrderUser($order);
-                $orderProduct->setProduct($item['product']);
+                $orderProduct->setProduct($item['stockProduct']->getProduct());
                 $orderProduct->setQuantity($item['quantity']);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($orderProduct);
                 $entityManager->flush();
                 //Manage Stock
-                $stockProduct = $stock->findOneBy(['id' => $item['product']->getStock()]);
+                $stockProduct = $stock->findOneBy(['id' => $item['stockProduct']]);
                 $stockProduct = $stockProduct->setQuantity($stockProduct->getQuantity() - $item['quantity']);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($stockProduct);
                 $entityManager->flush();
             }
-            //Generate the order
+
+            //Generate the order PDF
             if ($this->getUser() != null) {
                 $infoClientB = $billingAddress;
                 $infoClientS = $shippingAddress;
@@ -161,8 +165,8 @@ class OrderController extends AbstractController
             $pdfOptions = new Options();
             $pdfOptions->set('defaultFont', 'Arial');
             $dompdf = new Dompdf($pdfOptions);
-            $items = $items->findBy(['order_user' => $order->getId()]);
-            $client = $infoClient->getFirstname().$infoClient->getLastname().$order->getReference();
+            $items = $this->cartService->getFullCart();
+            $client = $infoClientB->getFirstname() . $infoClientB->getLastname() . $order->getReference();
             $html = $this->renderView('pdf/invoice.html.twig', [
                 'infoClientB' => $infoClientB,
                 'infoClientS' => $infoClientS,
@@ -175,22 +179,22 @@ class OrderController extends AbstractController
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $output = $dompdf->output();
-            $pdfFilepath = 'assets/documents/invoices/invoice'.$client.'.pdf';
+            $pdfFilepath = 'assets/documents/invoices/invoice' . $client . '.pdf';
             file_put_contents($pdfFilepath, $output);
 
+            //Send an email at the client with his invoice in PDF
             $email = (new TemplatedEmail())
                 ->from('sten.test4php@gmail.com')
                 ->to('sten.test4php@gmail.com')
                 ->subject('Votre facture NGS')
                 ->htmlTemplate('email/invoice.html.twig')
-                ->context(['contact' => $infoClient])
-                ->attachFromPath('assets/documents/invoices/invoice'.$client.'.pdf');
+                ->context(['contact' => $infoClientB])
+                ->attachFromPath('assets/documents/invoices/invoice' . $client . '.pdf');
             $mailer->send($email);
 
             $this->cartService->removeAll();
-
-            return $this->redirectToRoute('home_index');
-        }*/
+            return $this->redirectToRoute('order_validation');
+        }
 
         return $this->render('order/payment.html.twig', [
             'categories' => $this->categories,
@@ -203,6 +207,17 @@ class OrderController extends AbstractController
             'shipping' => $this->shipping[0],
             'infoClient' => $infoClient,
             'intent' => $intent
+        ]);
+    }
+
+    /**
+     * @Route("/thanks", name="order_validation")
+     * @return Response
+     */
+    public function thanks(): Response
+    {
+        return $this->render('order/thanks.html.twig', [
+            'categories' => $this->categories,
         ]);
     }
 }

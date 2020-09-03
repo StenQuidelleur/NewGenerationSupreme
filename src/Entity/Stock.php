@@ -28,9 +28,14 @@ class Stock
     private $minimum;
 
     /**
-     * @ORM\OneToOne(targetEntity=Product::class, mappedBy="stock", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="stocks")
      */
     private $product;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Size::class, inversedBy="stocks")
+     */
+    private $size;
 
     public function getId(): ?int
     {
@@ -61,25 +66,32 @@ class Stock
         return $this;
     }
 
+    public function __toString()
+    {
+        return strval($this->getQuantity());
+    }
+
     public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(Product $product): self
+    public function setProduct(?Product $product): self
     {
         $this->product = $product;
-
-        // set the owning side of the relation if necessary
-        if ($product->getStock() !== $this) {
-            $product->setStock($this);
-        }
 
         return $this;
     }
 
-    public function __toString()
+    public function getSize(): ?Size
     {
-        return strval($this->getQuantity());
+        return $this->size;
+    }
+
+    public function setSize(?Size $size): self
+    {
+        $this->size = $size;
+
+        return $this;
     }
 }

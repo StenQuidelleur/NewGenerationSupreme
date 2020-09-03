@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Contact;
+use App\Entity\SubCategory2;
 use App\Entity\User;
 use App\Entity\Category;
 use App\Entity\Product;
@@ -19,6 +20,8 @@ use App\Repository\NewsRepository;
 use App\Repository\OrderProductRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Repository\StockRepository;
+use App\Service\Cart\CartService;
 use App\Service\search\SearchService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,11 +34,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     protected $categories;
+    protected $cartService;
     protected $news;
 
-    public function __construct(CategoryRepository $categories, NewsRepository $news)
+    public function __construct(CategoryRepository $categories, NewsRepository $news, CartService $cartService)
     {
         $this->categories = $categories->findAll();
+        $this->cartService = $cartService;
         $this->news = $news->findAll();
     }
 
@@ -69,7 +74,6 @@ class HomeController extends AbstractController
             $items[] = $product->findBy(['subCategory' => $categ]);
         }
 
-
         return $this->render('home/category.html.twig', [
             'categories' => $this->categories,
             'news' => $this->news[0],
@@ -87,10 +91,9 @@ class HomeController extends AbstractController
      */
     public function getSubcategory(SubCategory $subCategory, CategoryRepository $category): Response
     {
-        $categoryId = $subCategory->getCategory()->getId();
-        $category = $category->find($categoryId);
+        $category = $category->find($subCategory->getCategory()->getId());
         $subCategories = $category->getSubCategories();
-
+        $subCategs2 = $subCategory->getSubCategory2s();
         $products = $subCategory->getProducts();
 
         return $this->render('home/subCategory.html.twig', [
@@ -99,22 +102,73 @@ class HomeController extends AbstractController
             'products' => $products,
             'category' => $category,
             'subCategories' => $subCategories,
-            'subCateg' => $subCategory
+            'subCateg' => $subCategory,
+            'subCategs2' => $subCategs2
+        ]);
+    }
 
+    /**
+     * @Route("/subCategory2/{id}", name="subCategory2_index")
+     * @param SubCategory2 $subCategory2
+     * @param CategoryRepository $category
+     * @return Response
+     */
+    public function getSubcategory2(SubCategory2 $subCategory2, CategoryRepository $category): Response
+    {
+        $category = $category->find($subCategory2->getSubcategory()->getCategory()->getId());
+        $subCategories = $category->getSubCategories();
+        $subCategs2 = $subCategory2->getSubcategory()->getSubCategory2s();
+        $products = $subCategory2->getProducts();
+
+        return $this->render('home/subCategory.html.twig', [
+            'categories' => $this->categories,
+            'news' => $this->news[0],
+            'products' => $products,
+            'category' => $category,
+            'subCategories' => $subCategories,
+            'subCateg' => $subCategory2->getSubcategory(),
+            'subCategs2' => $subCategs2
         ]);
     }
 
     /**
      * @Route("/product/{id}", name="product_index")
      * @param Product $product
+     * @param StockRepository $stock
      * @return Response
      */
-    public function getProduct(Product $product): Response
+    public function getProduct(Product $product, StockRepository $stock): Response
     {
+        $sizes = [];
+        foreach ($product->getStocks() as $item) {
+            if ($item->getQuantity() > 0 && $item->getSize() != null) {
+                $sizes[] = $item->getSize()->getName();
+            }
+        }
+
+        //Add product with his stockID
+        $stock = $stock->findBy(['product' => $product->getId()]);
+        $stockId = $stock[0]->getId();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $stockId = null;
+            foreach ($stock as $item){
+                if($item->getSize()->getName() == $_POST['size']){
+                    $stockId = $item->getId();
+                }
+            }
+            $this->cartService->add($stockId);
+            $this->addFlash('white', 'Cet article a été ajouté à votre panier. ');
+            return $this->redirectToRoute('product_index', ['id' => $product->getId()]);
+        }
+
         return $this->render('home/product.html.twig', [
             'categories' => $this->categories,
             'news' => $this->news[0],
             'product' => $product,
+            'subCateg' => $product->getSubCategory(),
+            'subCateg2' => $product->getSubCategory2(),
+            'sizes' => $sizes,
+            'stockId' => $stockId
         ]);
     }
 

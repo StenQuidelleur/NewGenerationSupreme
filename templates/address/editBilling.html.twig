@@ -21,7 +21,9 @@
     {{ form_row(form.company_name) }}
     {{ form_widget(form.shipping_comment, {'attr': {'class': 'd-none'}}) }}
     {{ form_widget(form.email, {'attr': {'class': 'd-none'}}) }}
-    <button class="btn btn-success">{{ button_label|default('Modifier') }}</button>
+    <div class="col text-center">
+        <button class="btn btn-dark">{{ button_label|default('Modifier') }}</button>
+    </div>
     {{ form_end(form) }}
 </div>
 {% endblock %}

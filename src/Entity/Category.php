@@ -44,7 +44,7 @@ class Category
     private $imageFile;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="category", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="category", cascade={"persist","remove"})
      */
     private $images;
 
@@ -157,11 +157,7 @@ class Category
         return $this;
     }
 
-    /**
-     * @param $image
-     * @throws \Exception
-     */
-    public function setImageFile($image) :void
+    public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
 

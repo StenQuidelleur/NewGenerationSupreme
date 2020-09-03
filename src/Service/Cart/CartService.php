@@ -3,16 +3,17 @@
 namespace App\Service\Cart;
 
 use App\Repository\ProductRepository;
+use App\Repository\StockRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CartService
 {
     protected $session;
-    protected $product;
-    public function __construct(SessionInterface $session, ProductRepository $product)
+    protected $stock;
+    public function __construct(SessionInterface $session, StockRepository $stock)
     {
         $this->session = $session;
-        $this->product = $product;
+        $this->stock = $stock;
     }
 
     public function add(int $id)
@@ -64,11 +65,10 @@ class CartService
     public function getFullCart () :array
     {
         $panier = $this->session->get('panier', []);
-
         $panierData = [];
         foreach ($panier as $id => $quantity) {
             $panierData[]= [
-                'product' => $this->product->find($id),
+                'stockProduct' => $this->stock->find($id),
                 'quantity' => $quantity
             ];
         }
@@ -82,7 +82,7 @@ class CartService
 
     public function getTotalItem(int $id)
     {
-        $productPrice = $this->product->find($id)->getPrice();
+        $productPrice = $this->stock->find($id)->getProduct()->getPrice();
         return $productPrice*$this->getQuantity($id);
     }
 
@@ -90,7 +90,7 @@ class CartService
     {
         $total = 0;
         foreach ($this->getFullCart() as $item) {
-            $total += $item['product']->getPrice() * $item['quantity'];;
+            $total += $item['stockProduct']->getProduct()->getPrice() * $item['quantity'];;
         }
 
         return $total;
